@@ -1,0 +1,10 @@
+{
+	"extends": "../tsconfig.lib.json",
+	"compilerOptions": {
+		"noLib": false,
+		"skipLibCheck": true,
+		"types": ["node"],
+		"baseUrl": "./"
+	},
+	"include": ["*.ts", "**/*.ts"]
+}
