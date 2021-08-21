@@ -2,8 +2,8 @@
 "use strict"
 // import { HandlerFunc, IRoute, Params, RedirectResponse } from "../global";
 import { Response, Request, request, response } from "express";
-import {RedirectResponse, HandlerFunc, IRoute, Params} from '../global'
-import { convertToRegexUrl,parseParams } from "../index";
+import {RedirectResponse, HandlerFunc, IRoute, Params} from '../../global'
+import { convertToRegexUrl,parseParams } from "../../index";
 import * as url from "url";
 
 /**

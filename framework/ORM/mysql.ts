@@ -1,5 +1,5 @@
 const mysql = require("mysql");
-import { QueryResults, Results } from "../global";
+import { QueryResults, Results } from "../../global";
 
 
 /*Implementation to mysql connections socket*/

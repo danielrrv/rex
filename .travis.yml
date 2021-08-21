@@ -1,8 +1,10 @@
 language: node_js
 node_js:
-  - 12
+    - 12
 before_deploy:
-  - tsc
+    - tsc
+after_success:
+    - cd dist && npm pack
 deploy:
     provider: npm
     email: "$NPM_EMAIL"

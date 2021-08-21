@@ -1,7 +1,7 @@
 
 import {statement} from "./mysql";
-import { Results } from "../global";
-import { IModel, Constructor } from "../global";
+import { Results } from "../../global";
+import { IModel, Constructor } from "../../global";
 
 
 /**
