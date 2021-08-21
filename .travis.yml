@@ -4,7 +4,7 @@ node_js:
 before_deploy:
     - tsc
 after_success:
-    - cd dist && npm pack
+    - npm pack
 deploy:
     provider: npm
     email: "$NPM_EMAIL"
