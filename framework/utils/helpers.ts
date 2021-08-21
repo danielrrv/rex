@@ -1,5 +1,5 @@
 
-import { Params } from "../../global";
+import { Params } from "../global";
 
 
 /**

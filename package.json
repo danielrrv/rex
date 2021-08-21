@@ -1,6 +1,6 @@
 {
   "name": "rex-framework",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "Node framework for web development",
   "main": "index.js",
   "typings": "global.d.ts",
