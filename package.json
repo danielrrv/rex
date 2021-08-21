@@ -8,7 +8,7 @@
     "lib": "dist"
   },
   "scripts": {
-    "build":"tsc"
+    "build": "tsc"
   },
   "repository": {
     "type": "git",
