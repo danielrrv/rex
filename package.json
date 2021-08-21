@@ -1,0 +1,34 @@
+{
+  "name": "rex-framework",
+  "version": "1.0.2",
+  "description": "Node framework for web development",
+  "main": "index.js",
+  "typings": "global.d.ts",
+  "directories": {
+    "lib": "dist"
+  },
+  "scripts": {
+    "test": "npm run test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/danielrrv/rex.git"
+  },
+  "keywords": [
+    "node",
+    "framework"
+  ],
+  "author": "Daniel Rodriguez",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/danielrrv/rex/issues"
+  },
+  "homepage": "https://github.com/danielrrv/rex#readme",
+  "dependencies": {
+    "aws-sdk": "^2.962.0",
+    "express": "^4.17.1",
+    "mysql": "^2.18.1",
+    "node-ts": "^5.1.2",
+    "typescript": "^4.3.5"
+  }
+}

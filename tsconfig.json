@@ -1,0 +1,16 @@
+{
+	
+	"compilerOptions": {
+		"outDir": "dist",
+		"declaration":true,
+		"lib": ["es6", "dom"],
+		"target": "es6",
+		"module": "commonjs",
+		"allowSyntheticDefaultImports": true,
+		"moduleResolution": "node",
+		"emitDecoratorMetadata": true,
+		"experimentalDecorators": true,
+		"sourceMap": true
+	},
+	"exclude": ["node_modules"]
+}

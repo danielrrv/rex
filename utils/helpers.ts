@@ -1,5 +1,5 @@
 
-import { Params } from "../types";
+import { Params } from "../global";
 
 
 /**

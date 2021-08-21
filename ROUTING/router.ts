@@ -1,11 +1,23 @@
 
 "use strict"
-import { HandlerFunc, IRoute, Params } from "../types";
+// import { HandlerFunc, IRoute, Params, RedirectResponse } from "../global";
 import { Response, Request, request, response } from "express";
-import { error404 } from "../../src/Controllers/handler";
+import {RedirectResponse, HandlerFunc, IRoute, Params} from '../global'
 import { convertToRegexUrl,parseParams } from "../index";
 import * as url from "url";
 
+/**
+ * Handles 404 redirection
+ * @param {Request} request
+ * @param {Response} response@
+ * @return 
+ *
+*/
+export const error404 = async (request: Request, response: Response): Promise<RedirectResponse> => {
+   response.statusCode = 404;
+   response.write("Error 404. Resource Not found");
+   response.end();
+};
 
 
 export class Router {
@@ -53,10 +65,13 @@ export class Router {
 		function next(){
 			index++;
 			if(index > len){
+				//Implementation to execute the last middleware.
 				return route.handlers[len - 1](req, resp);
 			}
+			//Execute the next middleware. Always starts at second middleware.
 			return route.handlers[index](req, resp, next)
 		}
+		//Execute the first middleware of the array.
 		return route.handlers[index].call(null, req, resp, next);
 	}
 }

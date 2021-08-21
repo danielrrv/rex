@@ -1,14 +1,14 @@
 
 import {statement} from "./mysql";
-import { QueryResults, Results } from "../types";
-import { IModel, Constructor } from "../types";
+import { Results } from "../global";
+import { IModel, Constructor } from "../global";
 
 
 /**
  * Class represents Relational models
  * @classdesc Manager Models.
  */
-export class RelationalModel<T> {
+export class RelationalModel {
 	public static Get<U>(Instance: Constructor<U>): U {
 		return new Instance();
 	}

@@ -4,7 +4,7 @@ const http = require("http");
 const path = require("path");
 const Handlebars = require("handlebars");
 import { Response } from "express";
-import { RedirectResponse } from "../types";
+import { RedirectResponse } from "../global";
 /**
  *Create a html string to send to user.
  * @param {Response} response used to notify Node Web server that requests ends.
