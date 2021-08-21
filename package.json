@@ -1,6 +1,6 @@
 {
   "name": "rex-framework",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Node framework for web development",
   "main": "index.js",
   "typings": "global.d.ts",
@@ -8,7 +8,7 @@
     "lib": "dist"
   },
   "scripts": {
-    "test": "npm run test"
+    "build":"tsc"
   },
   "repository": {
     "type": "git",
