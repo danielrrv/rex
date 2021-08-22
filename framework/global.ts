@@ -17,7 +17,7 @@ export interface Payload {
 
 }
 /*Implementation to describe Handler functions*/
-export type HandlerFunc = (req: Request, res: Response, next?: Function) => Promise<RedirectResponse> | void;
+export type HandlerFunc = (req: Request, res: Response, next?: Function) => any;
 
 export interface IRoute {
 	path: string;

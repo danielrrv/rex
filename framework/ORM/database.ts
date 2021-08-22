@@ -9,6 +9,7 @@ export default class Database extends Connection {
 	protected static connection: Database;
 	private static clientName = process.env.DB_CONNECTION || "mysql";
 
+
 	public static getConnection() {
 		return super.getConnection(Database.clientName)
 	}

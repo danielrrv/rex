@@ -24,12 +24,11 @@ export class Router {
 	private routes?: IRoute[] = [];
 	private templateFolder: string;
 
-	public constructor(options: Options) {
+	public constructor(options?: Options) {
 		this.templateFolder = options.templateFolder;
 		this.handle = this.handle.bind(this);
 	}
-	public handle(req: Request, res: Response, params: Params = {}, route = 0) {
-
+	public async handle(req: Request, res: Response, params: Params = {}, route = 0) {
 		/*Case #1: Request"s url matches with route and method at position  stated by route on routes array*/
 		if (new RegExp(convertToRegexUrl(this.routes[route].path))
 			.test(url.parse(req.url, true).pathname) &&
@@ -45,8 +44,9 @@ export class Router {
 			Object.assign(params, parseParams(this.routes[route].path, req.url));
 			/*See you in future ticks->*/
 			req.params = params;
-			const userResponse: IRexUserResponse = this.ExecuteMiddleware(req, res, this.routes[route]);
-			return this.HandleUserResponse(req, res, userResponse);
+			const userResponse = await this.ExecuteMiddleware(req, res, this.routes[route])
+			const appResponse: IRexUserResponse =  this.TransformUserResponse(userResponse);
+			return this.HandleUserResponse(req, res, appResponse);
 		}
 		/*Case #2. Keep preaching for routes. */
 		if (this.routes.length - 1 > route) {
@@ -63,7 +63,7 @@ export class Router {
 		this.routes.push({ path: path, method: "POST", handlers: func });
 		return this;
 	}
-	private ExecuteMiddleware(req: Request, resp: Response, route: IRoute) {
+	private async ExecuteMiddleware(req: Request, resp: Response, route: IRoute) {
 		let index = 0
 		let len = route.handlers.length
 		function next() {
@@ -77,6 +77,10 @@ export class Router {
 		}
 		//Execute the first middleware of the array.
 		return route.handlers[index].call(null, req, resp, next);
+	}
+	//Trivial
+	private TransformUserResponse(response: any): IRexUserResponse {
+		return ({ body: response, status: 200 });
 	}
 
 
@@ -94,7 +98,7 @@ export class Router {
 		else if (typeof response == 'function') {
 			throw new Error("Function is no a valid http response");
 		}
-		else (typeof response == 'boolean') {
+		else {
 			contentType = "text/html";
 			body = userResponse.body.toString();
 		}
@@ -102,6 +106,7 @@ export class Router {
 		httpResponse.setHeader("Content-Type", contentType)
 		httpResponse.write(body);
 		httpResponse.end();
+		return;
 	}
 
 }
