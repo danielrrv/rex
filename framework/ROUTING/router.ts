@@ -2,8 +2,8 @@
 "use strict"
 // import { HandlerFunc, IRoute, Params, RedirectResponse } from "../global";
 import { Response, Request, request, response } from "express";
-import {RedirectResponse, HandlerFunc, IRoute, Params} from '../global'
-import { convertToRegexUrl,parseParams } from "../../index";
+import { RedirectResponse, HandlerFunc, IRoute, Params, Options, IRexResponse, IRexUserResponse } from '../global'
+import { convertToRegexUrl, parseParams } from "../../index";
 import * as url from "url";
 
 /**
@@ -14,16 +14,18 @@ import * as url from "url";
  *
 */
 export const error404 = async (request: Request, response: Response): Promise<RedirectResponse> => {
-   response.statusCode = 404;
-   response.write("Error 404. Resource Not found");
-   response.end();
+	response.statusCode = 404;
+	response.write("Error 404. Resource Not found");
+	response.end();
 };
 
 
 export class Router {
 	private routes?: IRoute[] = [];
+	private templateFolder: string;
 
-	public constructor() {
+	public constructor(options: Options) {
+		this.templateFolder = options.templateFolder;
 		this.handle = this.handle.bind(this);
 	}
 	public handle(req: Request, res: Response, params: Params = {}, route = 0) {
@@ -34,7 +36,8 @@ export class Router {
 			req.method == this.routes[route].method
 		) {
 			//Implementation to avoid static files match the root route /. TODO: Move to a function. validRoute?(pathname);
-			if(this.routes[route].path=="/" && Array.from(url.parse(req.url, true).pathname).length > "/".length) return error404(req, res);
+			if (this.routes[route].path == "/" && Array.from(url.parse(req.url, true).pathname).length > "/".length)
+				return error404(req, res);
 			/*Implementation to capture query strings*/
 			const queryStrings = url.parse(req.url, true).query;
 			Object.assign(params, queryStrings);
@@ -42,7 +45,8 @@ export class Router {
 			Object.assign(params, parseParams(this.routes[route].path, req.url));
 			/*See you in future ticks->*/
 			req.params = params;
-			return this.ExecuteMiddleware(req, res, this.routes[route])
+			const userResponse: IRexUserResponse = this.ExecuteMiddleware(req, res, this.routes[route]);
+			return this.HandleUserResponse(req, res, userResponse);
 		}
 		/*Case #2. Keep preaching for routes. */
 		if (this.routes.length - 1 > route) {
@@ -62,9 +66,9 @@ export class Router {
 	private ExecuteMiddleware(req: Request, resp: Response, route: IRoute) {
 		let index = 0
 		let len = route.handlers.length
-		function next(){
+		function next() {
 			index++;
-			if(index > len){
+			if (index > len) {
 				//Implementation to execute the last middleware.
 				return route.handlers[len - 1](req, resp);
 			}
@@ -74,4 +78,30 @@ export class Router {
 		//Execute the first middleware of the array.
 		return route.handlers[index].call(null, req, resp, next);
 	}
+
+
+	private HandleUserResponse(httpRequest: Request, httpResponse: Response, userResponse: IRexUserResponse): void {
+		let contentType, body;
+		if (typeof response == 'string') {
+			contentType = "text/html";
+			//Validate whether body is Html or not.
+			body = userResponse.body;
+		}
+		else if (typeof response == 'object') {
+			contentType = "application/json";
+			body = JSON.stringify(userResponse.body);
+		}
+		else if (typeof response == 'function') {
+			throw new Error("Function is no a valid http response");
+		}
+		else (typeof response == 'boolean') {
+			contentType = "text/html";
+			body = userResponse.body.toString();
+		}
+		httpResponse.statusCode = 200;
+		httpResponse.setHeader("Content-Type", contentType)
+		httpResponse.write(body);
+		httpResponse.end();
+	}
+
 }
