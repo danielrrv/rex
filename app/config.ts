@@ -3,8 +3,7 @@ const mysql = require("mysql");
 const postgres = require('postgres')
 const AWS = require("aws-sdk");
 
-export default {
-	//TODO: This needs cache.
+export const database = {
 	mysql: mysql.createPool({
 		connectionLimit: process.env.MYSQL_POOL || 10,
 		host: process.env.MYSQL_HOST,
@@ -30,3 +29,5 @@ export default {
 		return new AWS.DynamoDB.DocumentClient()
 	}
 }
+	//TODO: This needs cache.
+

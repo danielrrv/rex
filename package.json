@@ -1,6 +1,6 @@
 {
   "name": "rex-framework",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "Node framework for web development",
   "main": "index.js",
   "typings": "global.d.ts",
@@ -28,6 +28,8 @@
   "dependencies": {
     "@types/supertest": "^2.0.11",
     "aws-sdk": "^2.962.0",
+    "chai": "^4.3.4",
+    "chai-http": "^4.3.0",
     "express": "^4.17.1",
     "handlebars": "^4.7.7",
     "mysql": "^2.18.1",

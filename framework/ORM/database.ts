@@ -1,34 +1,38 @@
-import { Results } from "../global";
-import Connection from "./Connection";
-
-const mysql = require("mysql");
-const postgres = require('postgres')
+import { Results, TConnection } from "../global";
+import {Connection} from "./Connection";
+import { database as config } from '../../app/config'// constructor
 
 
-export default class Database extends Connection {
-	protected static connection: Database;
-	private static clientName = process.env.DB_CONNECTION || "mysql";
 
 
-	public static getConnection() {
-		return super.getConnection(Database.clientName)
+export class Database extends Connection {
+	protected connections: TConnection;
+	private clientName: string;
+
+	public constructor(config: TConnection, dbConnection: string) {
+		super()
+		this.clientName = process.env.DB_CONNECTION || "mysql"
+		this.connections = config;
+	}
+	public getConnection() {
+		return super.getConnection(this.clientName)
 	}
 
-	public static  async Statement(query: string): Promise<Results[]> {
+	public async Statement(query: string): Promise<Results[]> {
 		return new Promise((resolve, reject) => {
-			if (Database.clientName == 'mysql') {
-				Database.getConnection().getConnection(async (err, connection) => {
+			if (this.clientName == 'mysql') {
+				this.getConnection().getConnection(async (err, conn) => {
 					if (err) reject(err); // not connected!
 					// Use the connection
-					connection.query(query, (error, results, _) => {
-						connection.release();
+					conn.query(query, (error, results, _) => {
+						conn.release();
 						// Handle error after the release.
 						if (error) reject(error);
 						else resolve(JSON.parse(JSON.stringify(results)));
 					});
 				});
-			} else if (Database.clientName == 'postgres') {
-				return Database.getConnection();
+			} else if (this.clientName == 'postgres') {
+				return this.getConnection();
 			} else {
 				throw new Error("No client found!")
 			}

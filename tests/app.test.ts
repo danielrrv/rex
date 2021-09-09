@@ -1,37 +1,41 @@
 
 const http = require("http");
 import { HandlerFunc, Router } from "../index";
-const supertest = require("supertest")
+const request = require("supertest")
+// const chai = require("chai");
+// const chaiHttp = require("chai-http");
+
+// const {expect} = chai;
+// chai.use(chaiHttp);
 
 const app = new Router({ templateFolder: 'templates' });
 
-function logger(req, resp, next) {
+const myResponse = ({ user: 1, homeId: 243423 });
+
+async function logger(req, resp, next) {
 	console.log(new Date().toISOString(), req.url);
 	return next();
 }
-const about = (req, res) => {
-	return ({ user: 1, homeId: 243423 });
+
+const about = async (req, res) => {
+	return myResponse;
 }
 
 app.Get("/about", logger, about);
 
 
 
-
-
 const server = http.createServer(app.handle);
 
 
-const request = supertest.agent(server)
 
-
-
-
-describe('GET /', function () {
-	it('responds with json', function (done) {
-		const result = request(app.handle).get('/about');
-		result.set('Accept', 'application/json')
-			.expect('Content-Type', /json/)
-			.expect(200, done);
+describe('GET /', () => {
+	it('responds with 200', async() => {
+		await request(server)
+			.get('/about')
+			.expect(200)
+			.then(res => {
+				expect(JSON.parse(res.text)).toEqual(expect.objectContaining(myResponse))
+			})
 	});
 });

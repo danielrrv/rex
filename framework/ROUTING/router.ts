@@ -68,7 +68,7 @@ export class Router {
 		let len = route.handlers.length
 		function next() {
 			index++;
-			if (index > len) {
+			if (index == len - 1) {
 				//Implementation to execute the last middleware.
 				return route.handlers[len - 1](req, resp);
 			}
@@ -102,11 +102,10 @@ export class Router {
 			contentType = "text/html";
 			body = userResponse.body.toString();
 		}
+
 		httpResponse.statusCode = 200;
-		httpResponse.setHeader("Content-Type", contentType)
-		httpResponse.write(body);
-		httpResponse.end();
-		return;
+		// httpResponse.setHeader("Content-Type", contentType)
+		httpResponse.end(body, 'utf8');
 	}
 
 }

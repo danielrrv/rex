@@ -1,6 +1,6 @@
 
-import {statement} from "./mysql";
-import DB from './database'
+import { statement } from "./mysql";
+import {Database} from './database'
 import { Results } from "../global";
 import { IModel, Constructor } from "../global";
 
@@ -13,7 +13,11 @@ export class RelationalModel {
 	public static Get<U>(Instance: Constructor<U>): U {
 		return new Instance();
 	}
-	readonly connection = DB
+	public connection: Database;
+	public constructor(conn: Database) {
+		this.connection = conn;
+	}
+
 
 	/*What it does: States the primary key of the table*/
 	protected primaryKey = "id";
@@ -27,7 +31,7 @@ export class RelationalModel {
 	*/
 	public async Find(id?: string): Promise<Results[]> {
 		/*What it does: returns the entire table records to user.*/
-		if (!id)return await this.connection.Statement("select * from " + this.tableName + ";");
+		if (!id) return await this.connection.Statement("select * from " + this.tableName + ";");
 		/*Implementation to validate id. It should be integer.*/
 		if (!isNaN(+id)) {
 			/*Implementation to query. See connection*/

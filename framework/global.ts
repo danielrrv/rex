@@ -45,3 +45,4 @@ export interface Params {
 }
 
 
+export type TConnection = {	[key: string]: any}
