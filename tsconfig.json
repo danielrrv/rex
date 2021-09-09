@@ -11,5 +11,5 @@
 		"experimentalDecorators": true,
 		"sourceMap": true
 	},
-	"exclude": ["node_modules", "app"]
+	"exclude": ["node_modules", "app", "tests"]
 }
