@@ -1,16 +1,25 @@
 import { Response, Request } from "express";
 
 
-
-
+export interface Options {
+	templateFolder: string;
+	engine?: string;
+	logger?: Logger;
+}
+export type IRexResponse = Response;
+export interface IRexUserResponse {
+	body: string | number | object;
+	status?: number
+}
+type Logger = any
 export interface Payload {
 	Request: Request;
 
 }
 /*Implementation to describe Handler functions*/
-export type HandlerFunc = (req: Request, res: Response, next?:Function ) => Promise<RedirectResponse> | void;
+export type HandlerFunc = (req: Request, res: Response, next?: Function) => any;
 
-export interface IRoute  {
+export interface IRoute {
 	path: string;
 	handlers: HandlerFunc[];
 	method: string;
@@ -36,3 +45,4 @@ export interface Params {
 }
 
 
+export type TConnection = {	[key: string]: any}
