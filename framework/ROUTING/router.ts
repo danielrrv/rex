@@ -1,7 +1,7 @@
 
 "use strict"
 // import { HandlerFunc, IRoute, Params, RedirectResponse } from "../global";
-import { Response, Request, request, response } from "express";
+import { Response, Request} from "express";
 import { RedirectResponse, HandlerFunc, IRoute, Params, Options, IRexResponse, IRexUserResponse, TConnection } from '../global'
 import { convertToRegexUrl, parseParams } from "../../index";
 import * as url from "url";
@@ -91,16 +91,16 @@ export class Router {
 
 	private HandleUserResponse(httpRequest: Request, httpResponse: Response, userResponse: IRexUserResponse): void {
 		let contentType, body;
-		if (typeof response == 'string') {
+		if (typeof userResponse.body == 'string') {
 			contentType = "text/html";
 			//Validate whether body is Html or not.
 			body = userResponse.body;
 		}
-		else if (typeof response == 'object') {
+		else if (typeof userResponse.body == 'object') {
 			contentType = "application/json";
 			body = JSON.stringify(userResponse.body);
 		}
-		else if (typeof response == 'function') {
+		else if (typeof userResponse.body == 'function') {
 			throw new Error("Function is no a valid http response");
 		}
 		else {

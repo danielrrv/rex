@@ -1,5 +1,5 @@
-import { Results, TConnection } from "../global";
-import{database as config} from './config';
+import { TConnection } from "../global";
+import { database as config } from './config';
 
 
 export class Connection {
