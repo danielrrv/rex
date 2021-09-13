@@ -1,5 +1,5 @@
 import { Results, TConnection } from "../global";
-const config = require('./config')
+import{database as config} from './config';
 
 
 export class Connection {
