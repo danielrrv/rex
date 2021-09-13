@@ -1,10 +1,11 @@
 
 "use strict"
 // import { HandlerFunc, IRoute, Params, RedirectResponse } from "../global";
-import { Response, Request, request, response } from "express";
-import { RedirectResponse, HandlerFunc, IRoute, Params, Options, IRexResponse, IRexUserResponse } from '../global'
+import { Response, Request} from "express";
+import { RedirectResponse, HandlerFunc, IRoute, Params, Options, IRexResponse, IRexUserResponse, TConnection } from '../global'
 import { convertToRegexUrl, parseParams } from "../../index";
 import * as url from "url";
+import { Connection } from "../ORM/index";
 
 /**
  * Handles 404 redirection
@@ -22,11 +23,15 @@ export const error404 = async (request: Request, response: Response): Promise<Re
 
 export class Router {
 	private routes?: IRoute[] = [];
-	private templateFolder: string;
+	public connectionConfig:string;
+	public templateFolder: string;
 
 	public constructor(options?: Options) {
 		this.templateFolder = options.templateFolder;
+		this.connectionConfig = options.connectionConfig;
 		this.handle = this.handle.bind(this);
+		//set the type of default database connection.
+		Connection.setConnectionName(this.connectionConfig);
 	}
 	public async handle(req: Request, res: Response, params: Params = {}, route = 0) {
 		/*Case #1: Request"s url matches with route and method at position  stated by route on routes array*/
@@ -86,16 +91,16 @@ export class Router {
 
 	private HandleUserResponse(httpRequest: Request, httpResponse: Response, userResponse: IRexUserResponse): void {
 		let contentType, body;
-		if (typeof response == 'string') {
+		if (typeof userResponse.body == 'string') {
 			contentType = "text/html";
 			//Validate whether body is Html or not.
 			body = userResponse.body;
 		}
-		else if (typeof response == 'object') {
+		else if (typeof userResponse.body == 'object') {
 			contentType = "application/json";
 			body = JSON.stringify(userResponse.body);
 		}
-		else if (typeof response == 'function') {
+		else if (typeof userResponse.body == 'function') {
 			throw new Error("Function is no a valid http response");
 		}
 		else {
