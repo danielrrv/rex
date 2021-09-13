@@ -5,6 +5,7 @@ export interface Options {
 	templateFolder: string;
 	engine?: string;
 	logger?: Logger;
+	connectionConfig:string
 }
 export type IRexResponse = Response;
 export interface IRexUserResponse {

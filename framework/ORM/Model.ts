@@ -1,14 +1,15 @@
 
-import {statement} from "./mysql";
+// import {statement} from "./mysql";
 import { Results } from "../global";
 import { IModel, Constructor } from "../global";
+import { Connection } from "./connection";
 
 
 /**
  * Class represents Relational models
  * @classdesc Manager Models.
  */
-export class RelationalModel {
+export class RelationalModel extends Connection {
 	public static Get<U>(Instance: Constructor<U>): U {
 		return new Instance();
 	}
@@ -22,13 +23,13 @@ export class RelationalModel {
 	 * @param {string?} id primaryKey
 	 * @return {Promise<Results[]>}
 	*/
-	public async Find(id?: string): Promise<Results[]> {
+	public async Find(id?: string): Promise<Results> {
 		/*What it does: returns the entire table records to user.*/
-		if (!id)return await statement("select * from " + this.tableName + ";");
+		if (!id)return await super.Statement("select * from " + this.tableName + ";");
 		/*Implementation to validate id. It should be integer.*/
 		if (!isNaN(+id)) {
 			/*Implementation to query. See connection*/
-			return await statement("select * from " + this.tableName + " where " + this.primaryKey + " = " + id + ";");
+			return await super.Statement("select * from " + this.tableName + " where " + this.primaryKey + " = " + id + ";");
 		} else /*TODO: Generic error*/throw new Error("Primary key should be integer");
 	}
 
@@ -40,9 +41,9 @@ export class RelationalModel {
 	 * @param {string} filter value to determine the condition
 	 * @returns {Promise<Results[]>}
 	*/
-	public async Where(column: string, condition: string, filter: string): Promise<Results[]> {
+	public async Where(column: string, condition: string, filter: string): Promise<Results> {
 		/*TODO:Validates inputs. Prepare default responses.*/
-		return await statement("select * from " + this.tableName + " where " + column + condition + filter + ";");
+		return await super.Statement("select * from " + this.tableName + " where " + column + condition + filter + ";");
 	}
 
 };

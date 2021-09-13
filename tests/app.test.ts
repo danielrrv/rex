@@ -2,13 +2,11 @@
 const http = require("http");
 import { HandlerFunc, Router } from "../index";
 const request = require("supertest")
-// const chai = require("chai");
-// const chaiHttp = require("chai-http");
 
-// const {expect} = chai;
-// chai.use(chaiHttp);
 
-const app = new Router({ templateFolder: 'templates' });
+
+
+const app = new Router({ templateFolder: 'templates', connectionConfig:'mysql' });
 
 const myResponse = ({ user: 1, homeId: 243423 });
 
@@ -20,6 +18,7 @@ async function logger(req, resp, next) {
 const about = async (req, res) => {
 	return myResponse;
 }
+// Mesa para trabajar o estudiar en forma de L en madera de pino. La hemos usado por 2 meses hasta ahora y definitivamente nos ha hecho  mucho mas productivos y cómodos. El motivo es viaje, nos mudamos y nos queda imposible llevarla con nosotros. Construiremos otra seguramente en nuestro nuevo destino. Valen toda la pena.
 
 app.Get("/about", logger, about);
 
