@@ -5,7 +5,7 @@ import { Response, Request, request, response } from "express";
 import { RedirectResponse, HandlerFunc, IRoute, Params, Options, IRexResponse, IRexUserResponse, TConnection } from '../global'
 import { convertToRegexUrl, parseParams } from "../../index";
 import * as url from "url";
-import { Connection } from "../ORM/connection";
+import { Connection } from "../ORM/index";
 
 /**
  * Handles 404 redirection
